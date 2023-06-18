@@ -20,9 +20,9 @@ jobs:
     - name: ccache
       uses: hendrikmuhs/ccache-action@v1.2
     - name: make build directory
-      run: mkdir /build
+      run: mkdir build
     - name: configure
-      run: ./configure --arch=x86 --target-os=mingw32 --cross-prefix=i686-w64-mingw32- --enable-cross-compile --prefix=/build
+      run: ./configure --arch=x86 --target-os=mingw32 --cross-prefix=i686-w64-mingw32- --enable-cross-compile --prefix=build
     - name: make
       run: make
     - name: make install
@@ -31,4 +31,4 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: output
-        path: /build
+        path: build

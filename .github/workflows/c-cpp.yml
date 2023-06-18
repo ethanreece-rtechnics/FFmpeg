@@ -28,7 +28,7 @@ jobs:
     - name: make install
       run: make install
     - name: upload build
-    - uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v3
       with:
         name: output
         path: /build

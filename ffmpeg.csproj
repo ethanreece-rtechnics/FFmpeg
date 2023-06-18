@@ -6,7 +6,7 @@
     <Company>R-Technics</Company>
   </PropertyGroup>
   <ItemGroup>
-<Content Include="ffmpeg\**\*.*">
+<Content Include="build\**\*.*">
   <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
   <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 </Content>

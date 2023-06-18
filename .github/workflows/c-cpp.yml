@@ -22,7 +22,7 @@ jobs:
     - name: make build directory
       run: mkdir build
     - name: configure
-      run: ./configure --arch=x86 --target-os=mingw32 --cross-prefix=i686-w64-mingw32- --enable-cross-compile --prefix=build --pkg-config-flags="--static" --disable-shared --enable-static --extra-cflags="-I$HOME/ffmpeg/include -static" --extra-ldflags="-L$HOME/ffmpeg/lib -static" --extra-ldexeflags="-static"
+      run: ./configure --arch=x86 --target-os=mingw32 --cross-prefix=i686-w64-mingw32- --enable-cross-compile --prefix=build --pkg-config-flags="--static" --disable-shared --enable-static --extra-cflags="-Ibuild/include -static" --extra-ldflags="-Lbuild/lib -static" --extra-ldexeflags="-static" --pkg-config-flags="--static" --bindir=$PWD/output/bin 
     - name: make
       run: make
     - name: make install

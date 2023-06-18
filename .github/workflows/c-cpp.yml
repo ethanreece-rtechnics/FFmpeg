@@ -16,10 +16,19 @@ jobs:
     - name: install dependencies
       run: |
         sudo apt update
-        sudo apt install -y autoconf automake build-essential cmake git-core libass-dev libfreetype6-dev libgnutls28-dev libmp3lame-dev libsdl2-dev libtool libva-dev libvdpau-dev libvorbis-dev libxcb1-dev libxcb-shm0-dev libxcb-xfixes0-dev meson ninja-build pkg-config texinfo wget yasm zlib1g-dev
+        sudo apt install -y autoconf automake build-essential cmake git-core libass-dev libfreetype6-dev libgnutls28-dev libmp3lame-dev libsdl2-dev libtool libva-dev libvdpau-dev libvorbis-dev libxcb1-dev libxcb-shm0-dev libxcb-xfixes0-dev meson ninja-build pkg-config texinfo wget yasm zlib1g-dev ccache mingw-w64
+    - name: ccache
+      uses: hendrikmuhs/ccache-action@v1.2
+    - name: make build directory
+      run: mkdir /build
     - name: configure
-      run: ./configure 
+      run: ./configure --arch=x86 --target-os=mingw32 --cross-prefix=i686-w64-mingw32- --enable-cross-compile --prefix=/build
     - name: make
       run: make
     - name: make install
       run: make install
+    - name: upload build
+    - uses: actions/upload-artifact@v3
+      with:
+        name: output
+        path: /build

@@ -17,15 +17,10 @@ jobs:
       run: | 
         sudo apt update
         sudo apt install cmake libass-dev libgnutls28-dev libmp3lame-dev libsdl2-dev libva-dev libvdpau-dev libvorbis-dev libxcb-xfixes0-dev meson ninja-build yasm mingw-w64 mingw-w64-tools libunistring-dev libssl-dev pkg-config
-    - name: ccache
-      uses: hendrikmuhs/ccache-action@v1.2
     - name: make build directory
       run: mkdir build
     - name: configure
-      run: ./configure --arch=x86_64 --target-os=mingw64 --cross-prefix=x86_64-w64-mingw32- --enable-cross-compile --prefix=build --disable-doc --enable-openssl
-    # - name: Output log
-      # if: always()
-      # run: cat 
+      run: ./configure --arch=x86_64 --target-os=mingw64 --cross-prefix=x86_64-w64-mingw32- --enable-cross-compile --prefix=build --disable-doc
     - name: make
       run: make
     - name: make install

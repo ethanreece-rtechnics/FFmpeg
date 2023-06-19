@@ -1,4 +1,4 @@
-FFMPEG Nuget Package
+Unofficial FFMPEG Nuget Package
 =============
 
 FFMPEG as a Nuget package automatically updated by Github Actions.

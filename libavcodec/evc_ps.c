@@ -104,8 +104,8 @@ static int vui_parameters(GetBitContext *gb, VUIParameters *vui)
 
     vui->timing_info_present_flag = get_bits(gb, 1);
     if (vui->timing_info_present_flag) {
-        vui->num_units_in_tick = get_bits(gb, 32);
-        vui->time_scale = get_bits(gb, 32);
+        vui->num_units_in_tick = get_bits_long(gb, 32);
+        vui->time_scale = get_bits_long(gb, 32);
         vui->fixed_pic_rate_flag = get_bits(gb, 1);
     }
     vui->nal_hrd_parameters_present_flag = get_bits(gb, 1);
@@ -224,8 +224,13 @@ int ff_evc_parse_sps(EVCParamSets *ps, const uint8_t *bs, int bs_size)
     sps->sps_dquant_flag = get_bits(&gb, 1);
     sps->sps_dra_flag = get_bits(&gb, 1);
 
-    if (sps->sps_pocs_flag)
+    if (sps->sps_pocs_flag) {
         sps->log2_max_pic_order_cnt_lsb_minus4 = get_ue_golomb(&gb);
+        if (sps->log2_max_pic_order_cnt_lsb_minus4 > 12U) {
+            ret = AVERROR_INVALIDDATA;
+            goto fail;
+        }
+    }
 
     if (!sps->sps_pocs_flag || !sps->sps_rpl_flag) {
         sps->log2_sub_gop_length = get_ue_golomb(&gb);
@@ -271,7 +276,11 @@ int ff_evc_parse_sps(EVCParamSets *ps, const uint8_t *bs, int bs_size)
             sps->chroma_qp_table_struct.same_qp_table_for_chroma = get_bits(&gb, 1);
             sps->chroma_qp_table_struct.global_offset_flag = get_bits(&gb, 1);
             for (int i = 0; i < (sps->chroma_qp_table_struct.same_qp_table_for_chroma ? 1 : 2); i++) {
-                sps->chroma_qp_table_struct.num_points_in_qp_table_minus1[i] = get_ue_golomb(&gb);;
+                sps->chroma_qp_table_struct.num_points_in_qp_table_minus1[i] = get_ue_golomb(&gb);
+                if (sps->chroma_qp_table_struct.num_points_in_qp_table_minus1[i] >= EVC_MAX_QP_TABLE_SIZE) {
+                    ret = AVERROR_INVALIDDATA;
+                    goto fail;
+                }
                 for (int j = 0; j <= sps->chroma_qp_table_struct.num_points_in_qp_table_minus1[i]; j++) {
                     sps->chroma_qp_table_struct.delta_qp_in_val_minus1[i][j] = get_bits(&gb, 6);
                     sps->chroma_qp_table_struct.delta_qp_out_val[i][j] = get_se_golomb(&gb);
@@ -342,6 +351,11 @@ int ff_evc_parse_pps(EVCParamSets *ps, const uint8_t *bs, int bs_size)
     if (!pps->single_tile_in_pic_flag) {
         pps->num_tile_columns_minus1 = get_ue_golomb(&gb);
         pps->num_tile_rows_minus1 = get_ue_golomb(&gb);
+        if (pps->num_tile_columns_minus1 >= EVC_MAX_TILE_COLUMNS ||
+            pps->num_tile_rows_minus1 >= EVC_MAX_TILE_ROWS) {
+            ret = AVERROR_INVALIDDATA;
+            goto fail;
+        }
         pps->uniform_tile_spacing_flag = get_bits(&gb, 1);
 
         if (!pps->uniform_tile_spacing_flag) {
@@ -356,6 +370,10 @@ int ff_evc_parse_pps(EVCParamSets *ps, const uint8_t *bs, int bs_size)
     }
 
     pps->tile_id_len_minus1 = get_ue_golomb(&gb);
+    if (pps->tile_id_len_minus1 > 15U) {
+        ret = AVERROR_INVALIDDATA;
+        goto fail;
+    }
     pps->explicit_tile_id_flag = get_bits(&gb, 1);
 
     if (pps->explicit_tile_id_flag) {

@@ -117,15 +117,17 @@ typedef struct NALUList {
 static int evcc_parse_sps(const uint8_t *bs, int bs_size, EVCDecoderConfigurationRecord *evcc)
 {
     GetBitContext gb;
-    int sps_seq_parameter_set_id;
     EVCSPS sps;
+
+    bs += EVC_NALU_HEADER_SIZE;
+    bs_size -= EVC_NALU_HEADER_SIZE;
 
     if (init_get_bits8(&gb, bs, bs_size) < 0)
         return 0;
 
     sps.sps_seq_parameter_set_id = get_ue_golomb_long(&gb);
 
-    if (sps_seq_parameter_set_id >= EVC_MAX_SPS_COUNT)
+    if (sps.sps_seq_parameter_set_id >= EVC_MAX_SPS_COUNT)
         return 0;
 
     // the Baseline profile is indicated by profile_idc eqal to 0
@@ -134,8 +136,8 @@ static int evcc_parse_sps(const uint8_t *bs, int bs_size, EVCDecoderConfiguratio
 
     sps.level_idc = get_bits(&gb, 8);
 
-    sps.toolset_idc_h = get_bits(&gb, 32);
-    sps.toolset_idc_l = get_bits(&gb, 32);
+    sps.toolset_idc_h = get_bits_long(&gb, 32);
+    sps.toolset_idc_l = get_bits_long(&gb, 32);
 
     // 0 - monochrome
     // 1 - 4:2:0
@@ -368,6 +370,10 @@ int ff_isom_write_evcc(AVIOContext *pb, const uint8_t *data,
         if (bytes_to_read < nalu_size) break;
 
         nalu_type = evc_get_nalu_type(data, bytes_to_read, pb);
+        if (nalu_type < EVC_NOIDR_NUT || nalu_type > EVC_UNSPEC_NUT62) {
+            ret = AVERROR_INVALIDDATA;
+            goto end;
+        }
 
         // @see ISO/IEC 14496-15:2021 Coding of audio-visual objects - Part 15: section 12.3.3.3
         // NAL_unit_type indicates the type of the NAL units in the following array (which shall be all of that type);

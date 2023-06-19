@@ -1,4 +1,20 @@
-FFmpeg README
+FFMPEG Nuget Package
+=============
+
+FFMPEG as a Nuget package automatically updated by Github Actions.
+
+## Files
+- .github/workflows/c-cpp.yml - Compiles FFMPEG and creates the package when the master branch changes
+- .github/workflows/syncfork.yml - Occasionally checks for upstream changes and updates this repo
+- ffmpeg.csproj - Nuget package metadata
+- NuGet.Config - configuration for pushing the Nuget package to the GitHub Nuget repo
+
+## Instructions
+Add `https://nuget.pkg.github.com/ethanreece-rtechnics/index.json` to VS as a Nuget source. Then download the FFMPEG package from that source.
+
+
+
+Upstream FFmpeg README
 =============
 
 FFmpeg is a collection of libraries and tools to process multimedia content

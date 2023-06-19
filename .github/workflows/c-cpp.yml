@@ -22,7 +22,7 @@ jobs:
     - name: make build directory
       run: mkdir build
     - name: configure
-      run: ./configure --arch=x86_64 --cross-prefix=x86_64-w64-mingw32- --enable-cross-compile --prefix=build --disable-doc --enable-openssl
+      run: ./configure --arch=x86_64 --target-os=mingw64 --cross-prefix=x86_64-w64-mingw32- --enable-cross-compile --prefix=build --disable-doc --enable-openssl
     # - name: Output log
       # if: always()
       # run: cat 

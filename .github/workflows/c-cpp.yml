@@ -28,9 +28,9 @@ jobs:
     - name: make install
       run: make install
     - name: make nuget package
-      run: dotnet pack -C release
+      run: dotnet pack -c release -o nuget
     - name: upload build
       uses: actions/upload-artifact@v3
       with:
         name: output
-        path: bin/Release/ffmpeg.**.nupkg
+        path: nuget/ffmpeg.**.nupkg

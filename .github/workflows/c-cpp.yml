@@ -17,6 +17,7 @@ jobs:
       with:
         packages: cmake libass-dev libgnutls28-dev libmp3lame-dev libsdl2-dev libva-dev libvdpau-dev libvorbis-dev libxcb-xfixes0-dev meson ninja-build yasm ccache mingw-w64 mingw-w64-tools gcc-mingw-w64-base gcc-mingw-w64 g++-mingw-w64 gcc-mingw-w64-x86-64 g++-mingw-w64-x86-64 libunistring-dev libssl-dev pkg-config
         version: 1.0
+        execute_install_scripts: true
     - name: ccache
       uses: hendrikmuhs/ccache-action@v1.2
     - name: make build directory

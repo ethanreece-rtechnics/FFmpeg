@@ -21,10 +21,11 @@ jobs:
       uses: hendrikmuhs/ccache-action@v1.2
     - name: make build directory
       run: mkdir build
-    - name: Setup upterm session
-      uses: lhotari/action-upterm@v1
     - name: configure
-      run: ./configure --arch=x86 --target-os=mingw32 --cross-prefix=i686-w64-mingw32- --cc="ccache i686-w64-mingw32-gcc" --cxx="ccache i686-w64-mingw32-g++" --enable-cross-compile --prefix=build --pkg-config-flags="--static" --disable-shared --enable-static --extra-cflags="-Ibuild/include -static" --extra-ldflags="-Lbuild/lib -static" --extra-ldexeflags="-static" --pkg-config-flags="--static" --disable-doc --enable-openssl
+      run: ./configure --arch=x86 --target-os=mingw32 --cross-prefix=i686-w64-mingw32- --cc="ccache i686-w64-mingw32-gcc" --cxx="ccache i686-w64-mingw32-g++" --enable-cross-compile --prefix=build --disable-shared --enable-static --pkg-config-flags="--static" --disable-doc --enable-openssl
+    # - name: Output log
+      # if: always()
+      # run: cat 
     - name: make
       run: make
     - name: make install

@@ -15,14 +15,14 @@ jobs:
     - uses: actions/checkout@v3
     - uses: awalsh128/cache-apt-pkgs-action@latest
       with:
-        packages: cmake libass-dev openssl-dev libgnutls28-dev libmp3lame-dev libsdl2-dev libva-dev libvdpau-dev libvorbis-dev libxcb-xfixes0-dev meson ninja-build yasm ccache mingw-w64 mingw-w64-tools
+        packages: cmake libass-dev libgnutls28-dev libmp3lame-dev libsdl2-dev libva-dev libvdpau-dev libvorbis-dev libxcb-xfixes0-dev meson ninja-build yasm ccache mingw-w64 mingw-w64-tools
         version: 1.0
     - name: ccache
       uses: hendrikmuhs/ccache-action@v1.2
     - name: make build directory
       run: mkdir build
     - name: configure
-      run: ./configure --arch=x86 --target-os=mingw32 --cross-prefix=i686-w64-mingw32- --enable-cross-compile --prefix=build --pkg-config-flags="--static" --disable-shared --enable-static --extra-cflags="-Ibuild/include -static" --extra-ldflags="-Lbuild/lib -static" --extra-ldexeflags="-static" --pkg-config-flags="--static" --disable-doc --enable-openssl
+      run: ./configure --arch=x86 --target-os=mingw32 --cross-prefix=i686-w64-mingw32- --enable-cross-compile --prefix=build --pkg-config-flags="--static" --disable-shared --enable-static --extra-cflags="-Ibuild/include -static" --extra-ldflags="-Lbuild/lib -static" --extra-ldexeflags="-static" --pkg-config-flags="--static" --disable-doc --enable-openssl --enable-gnutls
     - name: make
       run: make
     - name: make install

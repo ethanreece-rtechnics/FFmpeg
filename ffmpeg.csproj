@@ -4,6 +4,8 @@
     <Version>1.0.4.0</Version>
     <Authors>R-Technics</Authors>
     <Company>R-Technics</Company>
+    <RepositoryUrl>https://github.com/ethanreece-rtechnics/FFmpeg/</RepositoryUrl>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
   <ItemGroup>
 <Content Include="build\**\*.*">

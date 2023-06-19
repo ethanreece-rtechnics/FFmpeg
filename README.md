@@ -1,7 +1,7 @@
 Unofficial FFMPEG Nuget Package
 =============
 
-FFMPEG as a Nuget package automatically updated by Github Actions.
+FFMPEG as a Nuget package automatically updated by Github Actions. (This repo will not be maintained but is meant to be used as a reference.)
 
 ## Files
 - .github/workflows/c-cpp.yml - Compiles FFMPEG and creates the package when the master branch changes

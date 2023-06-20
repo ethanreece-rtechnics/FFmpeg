@@ -21,7 +21,7 @@ jobs:
         mkdir build
         mkdir build/lib
     - name: download OpenSSL build
-      uses: robinraju/release-downloader@1.8
+      uses: robinraju/release-downloader@v1.8
       with:
         repository: ${{ github.repository_owner }}/openssl
         latest: true

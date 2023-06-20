@@ -29,6 +29,8 @@ jobs:
         name: build
         path: build
   release:
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
     steps:
     - name: Download all workflow run artifacts

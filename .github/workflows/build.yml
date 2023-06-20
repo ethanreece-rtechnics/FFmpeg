@@ -25,11 +25,12 @@ jobs:
         repository: ${{ github.repository_owner }}/openssl
         latest: true
         fileName: "openssl-win64-dev.zip"
-        out-file-path: build
+        out-file-path: .
         extract: true
     - name: configure directories
       run: |
-        mv build/lib64 build/lib
+        mv build64/lib64 build/lib
+        mv build64/include build/include
     - name: list files (debug)
       run: ls build
     - name: configure

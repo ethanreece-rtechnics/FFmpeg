@@ -17,9 +17,21 @@ jobs:
         sudo apt update
         sudo apt install cmake libass-dev libgnutls28-dev libmp3lame-dev libsdl2-dev libva-dev libvdpau-dev libvorbis-dev libxcb-xfixes0-dev meson ninja-build yasm mingw-w64 mingw-w64-tools libunistring-dev
     - name: make build directory
-      run: mkdir build
+      run: |
+        mkdir build
+        mkdir build/lib
+    - name: download OpenSSL build
+      uses: robinraju/release-downloader@1.8
+      with:
+        repository: ${{ github.repository_owner }}/openssl
+        latest: true
+        fileName: "openssl-win64.zip"
+        out-file-path: build/lib
+        extract: true
+    - name: list files (debug)
+      run: ls build/lib
     - name: configure
-      run: ./configure --arch=x86_64 --target-os=mingw64 --cross-prefix=x86_64-w64-mingw32- --enable-cross-compile --prefix=build --disable-doc   --extra-cflags="-Ibuild/include" --extra-ldflags="-Lbuild/lib"
+      run: ./configure --arch=x86_64 --target-os=mingw64 --cross-prefix=x86_64-w64-mingw32- --enable-cross-compile --prefix=build --disable-doc --enable-openssl --extra-cflags="-Ibuild/include" --extra-ldflags="-Lbuild/lib"
     - name: make
       run: make
     - name: make install

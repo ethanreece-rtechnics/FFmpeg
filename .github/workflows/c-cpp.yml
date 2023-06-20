@@ -1,4 +1,4 @@
-name: C/C++ CI
+name: Build FFMPEG
 
 on:
   push:
@@ -20,7 +20,7 @@ jobs:
     - name: make build directory
       run: mkdir build
     - name: configure
-      run: ./configure --arch=x86_64 --target-os=mingw64 --cross-prefix=x86_64-w64-mingw32- --enable-cross-compile --prefix=build --disable-doc
+      run: ./configure --arch=x86_64 --target-os=mingw64 --cross-prefix=x86_64-w64-mingw32- --enable-cross-compile --prefix=build --disable-doc   --extra-cflags="-Ibuild/include" --extra-ldflags="-Lbuild/lib"
     - name: make
       run: make
     - name: make install

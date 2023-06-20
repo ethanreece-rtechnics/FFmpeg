@@ -1,16 +1,16 @@
 Unofficial FFMPEG Nuget Package
 =============
 
-FFMPEG as a Nuget package automatically updated by Github Actions. (This repo will not be maintained but is meant to be used as a reference.)
+FFMPEG as a NuGet package automatically updated by GitHub Actions. (This repo will not be maintained but is meant to be used as a reference.)
 
 ## Files
 - .github/workflows/build.yml - When the master branch changes, compiles FFMPEG, then creates the package
 - .github/workflows/syncfork.yml - Occasionally checks for upstream changes and updates this repo
-- ffmpeg.csproj - Nuget package metadata
-- NuGet.Config - configuration for pushing the Nuget package to the GitHub Nuget repo
+- ffmpeg.csproj - NuGet package metadata
+- NuGet.Config - configuration for pushing the NuGet package to the GitHub NuGet repo
 
 ## Instructions
-Add `https://nuget.pkg.github.com/ethanreece-rtechnics/index.json` to VS as a Nuget source. Then download the FFMPEG package from that source.
+Add `https://nuget.pkg.github.com/ethanreece-rtechnics/index.json` to VS as a NuGet source. Then download the FFMPEG package from that source.
 
 
 

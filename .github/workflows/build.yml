@@ -19,17 +19,19 @@ jobs:
     - name: make build directory
       run: |
         mkdir build
-        mkdir build/lib
     - name: download OpenSSL build
       uses: robinraju/release-downloader@v1.8
       with:
         repository: ${{ github.repository_owner }}/openssl
         latest: true
-        fileName: "openssl-win64.zip"
-        out-file-path: build/lib
+        fileName: "openssl-win64-dev.zip"
+        out-file-path: build
         extract: true
+    - name: configure directories
+      run: |
+        mv build/lib64 build/lib
     - name: list files (debug)
-      run: ls build/lib
+      run: ls build
     - name: configure
       run: ./configure --arch=x86_64 --target-os=mingw64 --cross-prefix=x86_64-w64-mingw32- --enable-cross-compile --prefix=build --disable-doc --enable-openssl --extra-cflags="-Ibuild/include" --extra-ldflags="-Lbuild/lib"
     - name: make

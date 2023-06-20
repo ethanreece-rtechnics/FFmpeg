@@ -16,7 +16,7 @@ jobs:
     - name: install packages
       run: | 
         sudo apt update
-        sudo apt install cmake libass-dev libgnutls28-dev libmp3lame-dev libsdl2-dev libva-dev libvdpau-dev libvorbis-dev libxcb-xfixes0-dev meson ninja-build yasm mingw-w64 mingw-w64-tools libunistring-dev libssl-dev pkg-config
+        sudo apt install cmake libass-dev libgnutls28-dev libmp3lame-dev libsdl2-dev libva-dev libvdpau-dev libvorbis-dev libxcb-xfixes0-dev meson ninja-build yasm mingw-w64 mingw-w64-tools libunistring-dev
     - name: make build directory
       run: mkdir build
     - name: configure

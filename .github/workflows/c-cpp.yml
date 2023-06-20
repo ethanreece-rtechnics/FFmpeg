@@ -8,9 +8,7 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v3
     - name: install packages
@@ -25,6 +23,16 @@ jobs:
       run: make
     - name: make install
       run: make install
+    - name: upload build
+      uses: actions/upload-artifact@v3
+      with:
+        name: build
+        path: build
+  release:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Download all workflow run artifacts
+      uses: actions/download-artifact@v3
     - name: Bump version and push tag
       id: tag_version
       uses: mathieudutour/github-tag-action@v6.1
@@ -50,8 +58,12 @@ jobs:
       run: dotnet nuget push "nuget/ffmpeg.**.nupkg" --no-symbols --skip-duplicate
       env:
         NUGET_AUTH_TOKEN: ${{ github.token }}
-    - name: upload build
-      uses: actions/upload-artifact@v3
+    - name: zip ffmpeg
+      run: zip -r -j ffmpeg-win64.zip build
+    - name: Release
+      uses: softprops/action-gh-release@v1
       with:
-        name: output
-        path: nuget/ffmpeg.**.nupkg
+        tag: ${{ steps.tag_version.outputs.new_tag }}
+        files: |
+          nuget/ffmpeg.**.nupkg
+          ffmpeg-win64.zip

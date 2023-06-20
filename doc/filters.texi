@@ -16224,6 +16224,11 @@ to preserve the source colorimetry and size as best as it can, but it will
 apply any embedded film grain, dolby vision metadata or anamorphic SAR present
 in source frames.
 @table @option
+@item inputs
+Set the number of inputs. This can be used, alongside the @code{idx} variable,
+to allow placing/blending multiple inputs inside the output frame. This
+effectively enables functionality similar to @ref{hstack}, @ref{overlay}, etc.
+
 @item w
 @item h
 Set the output video dimension expression. Default values are @code{iw} and
@@ -16320,6 +16325,8 @@ the @option{crop_w}, @option{crop_h}, @option{crop_x}, @option{crop_y},
 also contain the following constants:
 
 @table @option
+@item in_idx, idx
+The (0-based) numeric index of the currently active input stream.
 @item crop_w, cw
 @item crop_h, ch
 The computed values of @option{crop_w} and @option{crop_h}.

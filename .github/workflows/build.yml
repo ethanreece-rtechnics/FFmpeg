@@ -19,6 +19,7 @@ jobs:
     - name: make build directory
       run: |
         mkdir build
+        mkdir openssl
     - name: download OpenSSL build
       uses: robinraju/release-downloader@v1.8
       with:
@@ -29,12 +30,12 @@ jobs:
         extract: true
     - name: configure directories
       run: |
-        mv build64/lib64 build/lib
-        mv build64/include build/include
+        mv build64/lib64 openssl/lib
+        mv build64/include openssl/include
     - name: list files (debug)
       run: ls build
     - name: configure
-      run: ./configure --arch=x86_64 --target-os=mingw64 --cross-prefix=x86_64-w64-mingw32- --enable-cross-compile --prefix=build --disable-doc --enable-openssl --extra-cflags="-Ibuild/include" --extra-ldflags="-Lbuild/lib"
+      run: ./configure --arch=x86_64 --target-os=mingw64 --cross-prefix=x86_64-w64-mingw32- --enable-cross-compile --prefix=build --disable-doc --enable-openssl --extra-cflags="-Iopenssl/include" --extra-ldflags="-Lopenssl/lib"
     - name: make
       run: make
     - name: make install
@@ -79,7 +80,9 @@ jobs:
       env:
         NUGET_AUTH_TOKEN: ${{ github.token }}
     - name: zip ffmpeg
-      run: zip -r -j ffmpeg-win64.zip build
+      run: |
+        zip -r -j ffmpeg-win64.zip build/bin
+        zip -r ffmpeg-win64-dev.zip build
     - name: Release
       uses: softprops/action-gh-release@v1
       with:
@@ -87,3 +90,4 @@ jobs:
         files: |
           nuget/ffmpeg.**.nupkg
           ffmpeg-win64.zip
+          ffmpeg-win64-dev.zip
